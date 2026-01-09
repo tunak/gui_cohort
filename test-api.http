@@ -1,0 +1,39 @@
+### Test Transaction List (Empty)
+GET http://localhost:5295/api/transactions
+X-API-Key: bt_dev_key_admin
+
+### Test Transaction List with Pagination
+GET http://localhost:5295/api/transactions?page=1&pageSize=10
+X-API-Key: bt_dev_key_admin
+
+### Test Import Endpoint with Generic Sample
+POST http://localhost:5295/api/transactions/import
+X-API-Key: bt_dev_key_admin
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="account"
+
+Checking Account
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="generic-bank-sample.csv"
+Content-Type: text/csv
+
+< ./samples/generic-bank-sample.csv
+--WebAppBoundary--
+
+### Test Import Endpoint with ActivoBank Sample
+POST http://localhost:5295/api/transactions/import
+X-API-Key: bt_dev_key_admin
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="account"
+
+ActivoBank Savings
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="activobank-pt-sample.csv"
+Content-Type: text/csv
+
+< ./samples/activobank-pt-sample.csv
+--WebAppBoundary--
