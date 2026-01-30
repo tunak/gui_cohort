@@ -170,3 +170,4 @@ Thumbs.db
 
 # Node modules in checkpoints
 checkpoints/**/node_modules/
+src/BudgetTracker.Api/appsettings.Development.json
