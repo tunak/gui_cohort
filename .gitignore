@@ -167,3 +167,4 @@ Thumbs.db
 
 # Claude
 .claude/settings.local.json
+src/BudgetTracker.Api/appsettings.Development.json
