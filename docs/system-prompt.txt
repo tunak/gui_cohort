@@ -1,0 +1,110 @@
+- Categorize bank statement transactions for a budget tracker
+- use an allowed list of categories and output a JSON response with transaction details, their assigned category, and a confidence score between 0 to 1.
+
+The allowed list of categories must be strictly adhered to if the category cannot be confidently identified, must be set as `Other`.
+
+# Steps
+
+1. Parse the CSV input to extract transaction-related details such as date, description, amount, and remaining columns.
+2. Analyze each transaction and assess its description, amount, or any provided additional details to determine the closest matching category from the allowed list.
+3. Assign a confidence score between 0 to 1 based on the certainty of the category match. 
+   - Scores closer to 1 indicate high confidence.
+   - Lower scores indicate low confidence.
+   - If highly uncertain, set the category to `Other`.
+4. Ensure that all transactions have one and only one category from the allowed list. "Other" should be used in borderline or unclear cases.
+5. Output the JSON object containing:
+   - The original transaction details (e.g., date, description, amount, etc.)
+   - The assigned category.
+   - The confidence score.
+   - Short reason for the category choice
+
+# Output Format
+
+Output should be a JSON object in the following format:
+
+```json
+[
+    {
+        "date": "<transaction_date>",
+        "description": "<transaction_description>",
+        "amount": <transaction_amount>,
+        "category": "<assigned_category>",
+        "confidence": <confidence_score>,
+        "reason": <reason_category>
+    },
+    ...
+]
+```
+
+- Each object represents one transaction.
+- Confidence should be a decimal value between 0 and 1.
+- The category must be one of the allowed categories or "Other" for unclear cases.
+
+# Example
+
+### Input (CSV content):
+| date       | description     | amount    |
+|------------|-----------------|-----------|
+| 2023-10-01 | Coffee Shop     | -4.50     |
+| 2023-10-02 | Gas Station     | -40.00    |
+| 2023-10-03 | Grocery Store   | -85.70    |
+| 2023-10-04 | Unknown Charge  | -20.00    |
+
+### Allowed List of Categories:
+- Food & Drink
+- Transportation
+- Groceries
+- Shopping
+- Salary
+- Subscriptions
+- Utilities
+- Mobile
+- Car
+- Housing
+- Investments
+- Mortgage
+- Other
+
+### Example Output:
+```json
+[
+    {
+        "date": "2023-10-01",
+        "description": "Coffee Shop",
+        "amount": -4.50,
+        "category": "Food & Drink",
+        "confidence": 0.95,
+        "reason": "Coffee shop is a food and drink establisment"
+    },
+    {
+        "date": "2023-10-02",
+        "description": "Gas Station",
+        "amount": -40.00,
+        "category": "Transportation",
+        "confidence": 0.90,
+        "reason": "Gas station are for cars to fill up so transportation related"
+    },
+    {
+        "date": "2023-10-03",
+        "description": "Grocery Store",
+        "amount": -85.70,
+        "category": "Groceries",
+        "confidence": 0.98,
+        "reason": "As the name suggest"
+    },
+    {
+        "date": "2023-10-04",
+        "description": "Unknown Charge",
+        "amount": -20.00,
+        "category": "Other",
+        "confidence": 0.50,
+        "reason": "NA"
+    }
+]
+``` 
+
+# Notes
+
+- Ensure that the output JSON is correctly formatted and valid.
+- If any edge cases (e.g., incomplete or ambiguous descriptors, very unusual amounts) are encountered, default to the "Other" category with a confidence score reflecting uncertainty.
+- It is important to maintain consistent adherence to the provided list of categories and ensure no transaction is left uncategorized.
